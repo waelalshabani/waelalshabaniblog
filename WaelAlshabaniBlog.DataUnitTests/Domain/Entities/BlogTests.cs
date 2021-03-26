@@ -16,15 +16,16 @@ namespace WaelAlshabaniBlog.DataUnitTests
             _blogValidator = new BlogValidator(10, 20).BuildEntityRule();
         }
 
+
         [Theory]
         [InlineData("")]
         [InlineData(null)]
         [InlineData("less")]
-        public async Task CreateBlog_InvalidTitle_ShouldHaveValidationError(string title)
+        public async Task CreateBlog_InvalidTitle_ShouldHaveValidationErrorAsync(string title)
         {
             var newBlog = new BlogEntity(title, null);
 
-            var result = _blogValidator.TestValidate(newBlog, include => include.IncludeAllRuleSets());
+            var result = await _blogValidator.TestValidateAsync(newBlog, include => include.IncludeAllRuleSets());
 
             result.ShouldHaveValidationErrorFor(blog => blog.Title);
         }
@@ -34,14 +35,20 @@ namespace WaelAlshabaniBlog.DataUnitTests
         [InlineData("")]
         [InlineData(null)]
         [InlineData("This body contains")]
-        public async Task CreateBlog_InvalidBlody_ShouldHaveValidationError(string body)
+        public async Task CreateBlog_InvalidBlody_ShouldHaveValidationErrorAsync(string body)
         {
             var newBlog = new BlogEntity(null, body);
 
-            var result = _blogValidator.TestValidate(newBlog, include => include.IncludeAllRuleSets());
+            var result = await _blogValidator.TestValidateAsync(newBlog, include => include.IncludeAllRuleSets());
 
             result.ShouldHaveValidationErrorFor(blog => blog.Body);
         }
+
+
+
+
+
+        
 
     }
 }
